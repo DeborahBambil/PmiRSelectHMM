@@ -1,0 +1,11 @@
+sudo apt update
+sudo apt-get install unrar
+sudo apt-get update -y
+sudo apt-get install -y infernal
+sudo apt-get install -y emboss
+sudo apt-get install ncbi-blast+
+sudo apt install hmmer
+sudo apt-get install build-essential
+sudo apt-get install seqtk
+
+
