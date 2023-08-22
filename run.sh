@@ -20,16 +20,20 @@ mkdir PredictedHairpin
 for arquivo_info in Coordenadas/*; do
     nome_arquivo_info=$(basename "$arquivo_info")
     while read -r seq_id start end; do
-        awk -v seq_id="$seq_id" -v start="$start" -v end="$end" '/^>/ {if (id) exit; id = ($0 ~ seq_id)} id {seq = seq $0} END {print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1)}' genome > "PredictedHairpin/${nome_arquivo_info%.*}"
+        awk -v seq_id="$seq_id" -v start="$start" -v end="$end" '
+            /^>/ {if (id) { print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1); seq=""; } id = ($0 ~ seq_id); next;}
+            id {seq = seq $0}
+            END {if (id) print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1);}
+        ' genome >> "PredictedHairpin/${nome_arquivo_info%.*}"
     done < "$arquivo_info"
 done
 
-$Delete
-for arquivo in PredictedHairpin/*; do
-    if [ -f "$arquivo" ]; then
-        sed -i 's/>#-------------------:-----------//g' "$arquivo"
-    fi
-done
+#Delete
+#for arquivo in PredictedHairpin/*; do
+#    if [ -f "$arquivo" ]; then
+#        sed -i 's/>#-------------------:-----------//g' "$arquivo"
+#    fi
+#done
 
 find PredictedHairpin -size  0 -print -delete
 
@@ -47,7 +51,7 @@ for file in PredictedHairpin/*profile.hmm_saida_domtblout; do
     mv "$file" "$newname"
 done
 
-sed -i 's/:/\//' PredictedHairpin/*
+#sed -i 's/:/\//' PredictedHairpin/*
 
 
 #BLASTNMATURETAB
@@ -419,4 +423,3 @@ cat $(ls -v) > allMiRNAs.fa
 awk '/^>/ {printf("\n%s\n",$0);next; } { printf("%s",$0);}  END {printf("\n");}' < allMiRNAs.fa > allMiRNAsLine.fa
 for file in allMiRNAsLine.fa; do awk -v OFS="\t" '/^>/ {getline seq}; {gsub(/>/,"",$0); print FILENAME, $0, length(seq)}' $file; done > allMiRNAs_N
 cd ..
-
