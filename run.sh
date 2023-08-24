@@ -51,7 +51,7 @@ for file in PredictedHairpin/*profile.hmm_saida_domtblout; do
     mv "$file" "$newname"
 done
 
-#sed -i 's/:/\//' PredictedHairpin/*
+sed -i 's/:/\//' PredictedHairpin/*
 
 
 #BLASTNMATURETAB
