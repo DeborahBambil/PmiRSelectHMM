@@ -76,6 +76,40 @@ for file in PredictedHairpin/*; do
     grep -x -F -A 1000 -f "ID/$filename" "$file" > "PredictedCurated/$filename"
 done
 
+input_dir="PredictedHairpin"  # Substitua pelo caminho do diretório contendo os arquivos
+
+for file in "$input_dir"/*; do
+    if [ -f "$file" ]; then
+        sed -i -e 'y/ATCG/UAGC/' "$file"
+    fi
+done
+
+input_dir="PredictedHairpin"  # Substitua pelo caminho do diretório contendo os arquivos
+
+for file in "$input_dir"/*; do
+    if [ -f "$file" ]; then
+        sed -i -e 'y/atcg/uagc/' "$file"
+    fi
+done
+
+
+input_dir="PredictedCurated"  # Substitua pelo caminho do diretório contendo os arquivos
+
+for file in "$input_dir"/*; do
+    if [ -f "$file" ]; then
+        sed -i -e 'y/ATCG/UAGC/' "$file"
+    fi
+done
+
+
+input_dir="PredictedCurated"  # Substitua pelo caminho do diretório contendo os arquivos
+
+for file in "$input_dir"/*; do
+    if [ -f "$file" ]; then
+        sed -i -e 'y/atcg/uagc/' "$file"
+    fi
+done
+
 find PredictedCurated -size  0 -print -delete
 
 mkdir PredictedNonIdentical
