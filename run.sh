@@ -80,7 +80,7 @@ input_dir="PredictedHairpin"  # Substitua pelo caminho do diretório contendo os
 
 for file in "$input_dir"/*; do
     if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/ATCG/UAGC/' "$file"
+        sed -i -e '/^>/!y/T/U/' "$file"
     fi
 done
 
@@ -88,7 +88,7 @@ input_dir="PredictedHairpin"  # Substitua pelo caminho do diretório contendo os
 
 for file in "$input_dir"/*; do
     if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/atcg/uagc/' "$file"
+        sed -i -e '/^>/!y/t/u/' "$file"
     fi
 done
 
@@ -97,7 +97,7 @@ input_dir="PredictedCurated"  # Substitua pelo caminho do diretório contendo os
 
 for file in "$input_dir"/*; do
     if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/ATCG/UAGC/' "$file"
+        sed -i -e '/^>/!y/T/U/' "$file"
     fi
 done
 
@@ -106,7 +106,7 @@ input_dir="PredictedCurated"  # Substitua pelo caminho do diretório contendo os
 
 for file in "$input_dir"/*; do
     if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/atcg/uagc/' "$file"
+        sed -i -e '/^>/!y/t/u/' "$file"
     fi
 done
 
