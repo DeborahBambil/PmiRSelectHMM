@@ -1,3 +1,5 @@
+ ![name-of-you-image](https://github.com/DeborahBambil/figs/blob/0a501ddf617dd646e8f26ed45c11579b3ab48814/logo.png)
+
 # PmiRSelectHMM
 Authors: Deborah Bambil, Lúcio Flávio de Alencar Figueiredo
 
