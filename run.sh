@@ -1,5 +1,5 @@
 #!/bin/bash
-unrar x Sto.rar
+unrar x Stockholm.rar
 unrar x data.rar
 
 mkdir HMM
