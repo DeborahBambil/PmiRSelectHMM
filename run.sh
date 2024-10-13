@@ -6,7 +6,7 @@ mkdir HMM
 
 for hmm_file in Stockholm/*; do
     hmm_name=$(basename "$hmm_file")
-    hmmsearch --domtblout "HMM/${hmm_name}" "$hmm_file" genome.fa &
+    hmmsearch --domtblout "HMM/${hmm_name}" "$hmm_file" genome &
 done
 
 mkdir Coordenadas
@@ -24,7 +24,7 @@ for arquivo_info in Coordenadas/*; do
             /^>/ {if (id) { print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1); seq=""; } id = ($0 ~ seq_id); next;}
             id {seq = seq $0}
             END {if (id) print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1);}
-        ' genome.fa >> "PredictedHairpin/${nome_arquivo_info%.*}"
+        ' genome >> "PredictedHairpin/${nome_arquivo_info%.*}"
     done < "$arquivo_info"
 done
 
