@@ -13,7 +13,7 @@ If your operating system is different from Ubuntu, install the infernal tool, de
 
 # Insert Organism FOR search of homologs miRNAs
 
-#Insert in "PmiRSelect" directory named "genome.fa" (Genome, RNA-Seq or others)
+#Insert in "PmiRSelect" directory named "genome" (Genome, RNA-Seq or others)
 
 # miRNAs Identification (START SEARCH)
 
