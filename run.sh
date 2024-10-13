@@ -8,8 +8,6 @@ for hmm_file in Stockholm/*; do
     hmm_name=$(basename "$hmm_file")
     hmmsearch --domtblout "HMM/${hmm_name}" "$hmm_file" genome &
 done
-# Wait for all background processes to finish
-wait
 
 mkdir Coordenadas
 for arquivo in HMM/*; do
