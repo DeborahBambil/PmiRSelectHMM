@@ -1,4 +1,5 @@
 #!/bin/bash
+dos2unix run.sh
 unrar x Stockholm.rar
 unrar x data.rar
 
