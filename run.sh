@@ -10,13 +10,16 @@ for hmm_file in Stockholm/*; do
 done
 
 mkdir Coordenadas
+
 for arquivo in HMM/*; do
     nome_arquivo=$(basename "$arquivo")
     awk '$1 != "#" {print $1, $20, $21}' "$arquivo" > "Coordenadas/${nome_arquivo%.*}.txt"
 done
+
 find Coordenadas -size  0 -print -delete
 
 mkdir PredictedHairpin
+
 for arquivo_info in Coordenadas/*; do
     nome_arquivo_info=$(basename "$arquivo_info")
     while read -r seq_id start end; do
@@ -26,14 +29,8 @@ for arquivo_info in Coordenadas/*; do
             END {if (id) print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1);}
         ' genome >> "PredictedHairpin/${nome_arquivo_info%.*}"
     done < "$arquivo_info"
+    
 done
-
-#Delete
-#for arquivo in PredictedHairpin/*; do
-#    if [ -f "$arquivo" ]; then
-#        sed -i 's/>#-------------------:-----------//g' "$arquivo"
-#    fi
-#done
 
 find PredictedHairpin -size  0 -print -delete
 
