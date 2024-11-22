@@ -15,7 +15,6 @@ for arquivo in HMM/*; do
     nome_arquivo=$(basename "$arquivo")
     awk '$1 != "#" {print $1, $20, $21}' "$arquivo" > "Coordenadas/${nome_arquivo%.*}.txt"
 done
-
 find Coordenadas -size  0 -print -delete
 
 mkdir PredictedHairpin
@@ -27,10 +26,12 @@ for arquivo_info in Coordenadas/*; do
             /^>/ {if (id) { print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1); seq=""; } id = ($0 ~ seq_id); next;}
             id {seq = seq $0}
             END {if (id) print ">" seq_id ":" start "-" end "\n" substr(seq, start, end - start + 1);}
-        ' genome >> "PredictedHairpin/${nome_arquivo_info%.*}"
+        ' genome >> "PredictedHairpin/${nome_arquivo_info%.*}" &
     done < "$arquivo_info"
-    
 done
+
+# Aguarda todas as tarefas em background terminarem
+wait
 
 find PredictedHairpin -size  0 -print -delete
 
@@ -166,8 +167,11 @@ for file in PredictedHairpin/*; do
     skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 95 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant95/$filename" -redundantoutseq "Redundant95/$filename"
 done
 
+
+
 #Delete gff
 rm -f *.gff
+
 
 find PredictedNonIdentical -size  0 -print -delete
 find PredictedIdentical -size  0 -print -delete
