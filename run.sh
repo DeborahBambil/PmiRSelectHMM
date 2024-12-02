@@ -53,6 +53,7 @@ sed -i 's/:/\//' PredictedHairpin/*
 
 
 #BLASTNMATURETAB
+
 mkdir ID
 for file in PredictedHairpin/*; do
     filename=$(basename "$file")
