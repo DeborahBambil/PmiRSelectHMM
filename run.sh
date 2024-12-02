@@ -56,8 +56,9 @@ sed -i 's/:/\//' PredictedHairpin/*
 mkdir ID
 for file in PredictedHairpin/*; do
     filename=$(basename "$file")
-     blastn -query "$file" -db "data/families/$filename" -out "ID/$filename" -evalue 0.01 -outfmt "6 qseqid" -word_size 15
+    blastn -query "$file" -db "data/families/$filename" -out "ID/$filename" -evalue 0.01 -outfmt "6 qseqid" -word_size 15 &
 done
+wait
 
 find ID -size  0 -print -delete
 
