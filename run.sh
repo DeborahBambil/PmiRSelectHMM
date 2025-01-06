@@ -74,7 +74,7 @@ for file in ID/*; do
     sed -i 's/^/>/' "$file"
 done
 
-#mkdir PredictedCurated
+mkdir PredictedCurated
 #Loop to iterate over the files in the "PredictedHairpin" directory.
 for file in PredictedHairpin/*; do
     filename=$(basename "$file")
