@@ -51,8 +51,13 @@ done
 
 sed -i 's/:/\//' PredictedHairpin/*
 
-
 #BLASTNMATURETAB
+
+#remover profile name
+for arquivo in PredictedHairpin/*profile*; do
+  novo_nome=${arquivo/profile/};
+  mv "$arquivo" "$novo_nome";
+done
 
 mkdir ID
 for file in PredictedHairpin/*; do
@@ -69,45 +74,11 @@ for file in ID/*; do
     sed -i 's/^/>/' "$file"
 done
 
-mkdir PredictedCurated
+#mkdir PredictedCurated
 #Loop to iterate over the files in the "PredictedHairpin" directory.
 for file in PredictedHairpin/*; do
     filename=$(basename "$file")
     grep -x -F -A 1000 -f "ID/$filename" "$file" > "PredictedCurated/$filename"
-done
-
-input_dir="PredictedHairpin"  # Substitua pelo caminho do diretório contendo os arquivos
-
-for file in "$input_dir"/*; do
-    if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/T/U/' "$file"
-    fi
-done
-
-input_dir="PredictedHairpin"  # Substitua pelo caminho do diretório contendo os arquivos
-
-for file in "$input_dir"/*; do
-    if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/t/u/' "$file"
-    fi
-done
-
-
-input_dir="PredictedCurated"  # Substitua pelo caminho do diretório contendo os arquivos
-
-for file in "$input_dir"/*; do
-    if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/T/U/' "$file"
-    fi
-done
-
-
-input_dir="PredictedCurated"  # Substitua pelo caminho do diretório contendo os arquivos
-
-for file in "$input_dir"/*; do
-    if [ -f "$file" ]; then
-        sed -i -e '/^>/!y/t/u/' "$file"
-    fi
 done
 
 find PredictedCurated -size  0 -print -delete
