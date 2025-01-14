@@ -8,5 +8,6 @@ sudo apt install hmmer
 sudo apt-get install build-essential
 sudo apt-get install seqtk
 sudo apt-get install dos2unix
+sudo apt install parallel
 
 
