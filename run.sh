@@ -83,8 +83,9 @@ done
 
 find PredictedCurated -size  0 -print -delete
 
-mkdir PredictedNonIdentical
-mkdir PredictedIdentical
+#PredictedCurated
+mkdir NonIdentical
+mkdir Identical
 mkdir Redundant70
 mkdir NonRedundant70
 mkdir NonRedundant75
@@ -98,56 +99,36 @@ mkdir Redundant90
 mkdir NonRedundant95
 mkdir Redundant95
 
-#RedundanceIdenticalNonIdentical
+# run skipredundant
+executar_skipredundant() {
+  local file=$1
+  local threshold=$2
+  local outseq_dir=$3
+  local redundantoutseq_dir=$4
+
+  filename=$(basename "$file")
+  skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold "$threshold" -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "$outseq_dir/$filename" -redundantoutseq "$redundantoutseq_dir/$filename"
+}
+
+#  comandos
+thresholds=(100 70 75 80 85 90 95)
+outseq_dirs=("NonIdentical" "NonRedundant70" "NonRedundant75" "NonRedundant80" "NonRedundant85" "NonRedundant90" "NonRedundant95")
+redundantoutseq_dirs=("Identical" "Redundant70" "Redundant75" "Redundant80" "Redundant85" "Redundant90" "Redundant95")
+
+# parallelo
 for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 100 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "PredictedNonIdentical/$filename" -redundantoutseq "PredictedIdentical/$filename"
+  for ((i=0; i<${#thresholds[@]}; i++)); do
+    executar_skipredundant "$file" "${thresholds[$i]}" "${outseq_dirs[$i]}" "${redundantoutseq_dirs[$i]}" &
+  done
+  wait
 done
-
-#REDUNDANCE70
-for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 70 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant70/$filename" -redundantoutseq "Redundant70/$filename"
-done
-
-#REDUNDANCE75
-for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 75 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant75/$filename" -redundantoutseq "Redundant75/$filename"
-done
-
-#REDUNDANCE80
-for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 80 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant80/$filename" -redundantoutseq "Redundant80/$filename"
-done
-
-#REDUNDANCE85
-for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 85 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant85/$filename" -redundantoutseq "Redundant85/$filename"
-done
-
-#REDUNDANCE90
-for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 90 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant90/$filename" -redundantoutseq "Redundant90/$filename"
-done
-
-#REDUNDANCE95
-for file in PredictedHairpin/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile  matrixf] -mode 1 -threshold 95 -minthreshold 30 -maxthreshold 90 -gapopen  10 -gapextend 5 -outseq "NonRedundant95/$filename" -redundantoutseq "Redundant95/$filename"
-done
-
-
 
 #Delete gff
 rm -f *.gff
 
 
-find PredictedNonIdentical -size  0 -print -delete
-find PredictedIdentical -size  0 -print -delete
+find NonIdentical -size  0 -print -delete
+find Identical -size  0 -print -delete
 find Redundant70 -size  0 -print -delete
 find NonRedundant70 -size  0 -print -delete
 find NonRedundant75 -size  0 -print -delete
