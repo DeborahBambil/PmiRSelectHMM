@@ -177,50 +177,29 @@ mkdir CuratedRedundant90
 mkdir CuratedNonRedundant95
 mkdir CuratedRedundant95
 
+# run skipredundant
+executar_skipredundant() {
+  local file=$1
+  local threshold=$2
+  local outseq_dir=$3
+  local redundantoutseq_dir=$4
 
-#CompareMatureRedundanceIdenticalNonIdentical
+  filename=$(basename "$file")
+  skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold "$threshold" -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "$outseq_dir/$filename" -redundantoutseq "$redundantoutseq_dir/$filename"
+}
+
+# comandos
+thresholds=(100 70 75 80 85 90 95)
+outseq_dirs=("CuratedNonIdentical" "CuratedNonRedundant70" "CuratedNonRedundant75" "CuratedNonRedundant80" "CuratedNonRedundant85" "CuratedNonRedundant90" "CuratedNonRedundant95")
+redundantoutseq_dirs=("CuratedIdentical" "CuratedRedundant70" "CuratedRedundant75" "CuratedRedundant80" "CuratedRedundant85" "CuratedRedundant90" "CuratedRedundant95")
+
+# parallelo
 for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 100 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonIdentical/$filename" -redundantoutseq "CuratedIdentical/$filename"
+  for ((i=0; i<${#thresholds[@]}; i++)); do
+    executar_skipredundant "$file" "${thresholds[$i]}" "${outseq_dirs[$i]}" "${redundantoutseq_dirs[$i]}" &
+  done
+  wait
 done
-
-#CompareMatureREDUNDANCE70
-for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 70 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonRedundant70/$filename" -redundantoutseq "CuratedRedundant70/$filename"
-done
-
-#CompareMatureREDUNDANCE75
-for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 75 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonRedundant75/$filename" -redundantoutseq "CuratedRedundant75/$filename"
-done
-
-#CompareMatureREDUNDANCE80
-for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 80 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonRedundant80/$filename" -redundantoutseq "CuratedRedundant80/$filename"
-done
-
-#CompareMatureREDUNDANCE85
-
-for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 85 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonRedundant85/$filename" -redundantoutseq "CuratedRedundant85/$filename"
-done
-
-#CompareMatureREDUNDANCE90
-for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 90 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonRedundant90/$filename" -redundantoutseq "CuratedRedundant90/$filename"
-done
-
-#CompareMatureREDUNDANCE95
-for file in PredictedCurated/*; do
-    filename=$(basename "$file")
-    skipredundant -feature toggle -sequences "$file" [-datafile matrixf] -mode 1 -threshold 95 -minthreshold 30 -maxthreshold 90 -gapopen 10 -gapextend 5 -outseq "CuratedNonRedundant95/$filename" -redundantoutseq "CuratedRedundant95/$filename"
-done
-
 
 find PredictedCurated -size  0 -print -delete
 find CuratedNonIdentical -size  0 -print -delete
