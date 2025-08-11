@@ -2,11 +2,16 @@
 unrar x Stockholm.rar
 unrar x data.rar
 
-mkdir HMM
+mkdir -p HMM  # garante que a pasta existe
 
 for hmm_file in Stockholm/*; do
-    hmm_name=$(basename "$hmm_file")
-    hmmsearch --domtblout "HMM/${hmm_name}" --cpu $(nproc) "$hmm_file" genome
+    hmm_name=$(basename "$hmm_file" .hmm)  # remove extensão .hmm
+    hmm_name=$(basename "$hmm_name" .sto)  # remove extensão .sto se houver
+    nhmmer \
+        --tblout "HMM/${hmm_name}.tblout" \
+        --cpu $(nproc) \
+        "$hmm_file" \
+        genome
 done
 
 mkdir Coordenadas
